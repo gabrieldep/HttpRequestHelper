@@ -15,12 +15,12 @@ namespace HttpRequestHelper.Control
         /// </summary>
         /// <param name="link">Link</param>
         /// <returns>Response from request.</returns>
-        public static async Task<object> GetAsync<T>(string link)
+        public static async Task<T> GetAsync<T>(string link)
         {
             using HttpResponseMessage response = await CreateHttpClient(link).GetAsync(link);
             return response.IsSuccessStatusCode ?
                 JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
-                    : null;
+                    : default;
         }
 
         /// <summary>
