@@ -20,12 +20,7 @@ namespace HttpRequestHelper.Control
         /// <returns>Response from request.</returns>
         internal static async Task<object> GetAsync<T>(string link)
         {
-            HttpClient client = new()
-            {
-                BaseAddress = new Uri(link)
-            };
-
-            using HttpResponseMessage response = await client.GetAsync(link);
+            using HttpResponseMessage response = await CreateHttpClient(link).GetAsync(link);
             return response.IsSuccessStatusCode ?
                 JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
                     : null;
@@ -41,15 +36,10 @@ namespace HttpRequestHelper.Control
         /// <returns>Response from request.</returns>
         internal static async Task<HttpStatusCode> PutAsync<T>(object obj, string link, Encoding encoding, string mediaType)
         {
-            HttpClient client = new()
-            {
-                BaseAddress = new Uri(link)
-            };
-
             JObject document = JObject.FromObject(obj);
             StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
 
-            using HttpResponseMessage response = await client.PutAsync(link, content);
+            using HttpResponseMessage response = await CreateHttpClient(link).PutAsync(link, content);
             return response.StatusCode;
         }
 
@@ -63,14 +53,9 @@ namespace HttpRequestHelper.Control
         /// <returns>Response from request.</returns>
         internal static async Task<HttpStatusCode> PostAsync<T>(object obj, string link, Encoding encoding, string mediaType)
         {
-            HttpClient client = new()
-            {
-                BaseAddress = new Uri(link)
-            };
-
-            using HttpResponseMessage response = await client
+            using HttpResponseMessage response = await CreateHttpClient(link)
                 .PostAsync(
-                    link, 
+                    link,
                     new StringContent(JsonConvert.SerializeObject(JObject.FromObject(obj)), encoding, mediaType));
             return response.StatusCode;
         }
@@ -82,12 +67,13 @@ namespace HttpRequestHelper.Control
         /// <returns>Response from request.</returns>
         internal static async Task<HttpStatusCode> DeleteAsync<T>(string link)
         {
-            HttpClient client = new()
-            {
-                BaseAddress = new Uri(link)
-            };
-            using HttpResponseMessage response = await client.DeleteAsync(link);
+            using HttpResponseMessage response = await CreateHttpClient(link).DeleteAsync(link);
             return response.StatusCode;
+        }
+
+        internal static HttpClient CreateHttpClient(string link)
+        {
+            return new HttpClient { BaseAddress = new Uri(link) };
         }
     }
 }
