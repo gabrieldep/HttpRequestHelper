@@ -68,6 +68,11 @@ namespace HttpRequestHelper.Control
             return response.StatusCode;
         }
 
+        /// <summary>
+        /// Create HttpClient
+        /// </summary>
+        /// <param name="link">Link</param>
+        /// <returns>HttpClient.</returns>
         public static HttpClient CreateHttpClient(string link)
         {
             return new HttpClient { BaseAddress = new Uri(link) };
