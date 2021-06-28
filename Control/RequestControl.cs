@@ -15,7 +15,7 @@ namespace HttpRequestHelper.Control
         /// </summary>
         /// <param name="link">Link</param>
         /// <returns>Response from request.</returns>
-        internal static async Task<object> GetAsync<T>(string link)
+        public static async Task<object> GetAsync<T>(string link)
         {
             using HttpResponseMessage response = await CreateHttpClient(link).GetAsync(link);
             return response.IsSuccessStatusCode ?
@@ -31,7 +31,7 @@ namespace HttpRequestHelper.Control
         /// <param name="encoding">Encoding</param>
         /// <param name="mediaType">Media type</param>
         /// <returns>Response from request.</returns>
-        internal static async Task<HttpStatusCode> PutAsync<T>(object obj, string link, Encoding encoding, string mediaType)
+        public static async Task<HttpStatusCode> PutAsync<T>(object obj, string link, Encoding encoding, string mediaType)
         {
             JObject document = JObject.FromObject(obj);
             StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
@@ -48,7 +48,7 @@ namespace HttpRequestHelper.Control
         /// <param name="encoding">Encoding</param>
         /// <param name="mediaType">Media type</param>
         /// <returns>Response from request.</returns>
-        internal static async Task<HttpStatusCode> PostAsync<T>(object obj, string link, Encoding encoding, string mediaType)
+        public static async Task<HttpStatusCode> PostAsync<T>(object obj, string link, Encoding encoding, string mediaType)
         {
             using HttpResponseMessage response = await CreateHttpClient(link)
                 .PostAsync(
@@ -62,13 +62,13 @@ namespace HttpRequestHelper.Control
         /// </summary>
         /// <param name="link">Link</param>
         /// <returns>Response from request.</returns>
-        internal static async Task<HttpStatusCode> DeleteAsync<T>(string link)
+        public static async Task<HttpStatusCode> DeleteAsync<T>(string link)
         {
             using HttpResponseMessage response = await CreateHttpClient(link).DeleteAsync(link);
             return response.StatusCode;
         }
 
-        internal static HttpClient CreateHttpClient(string link)
+        public static HttpClient CreateHttpClient(string link)
         {
             return new HttpClient { BaseAddress = new Uri(link) };
         }
