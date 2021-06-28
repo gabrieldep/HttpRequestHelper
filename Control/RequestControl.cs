@@ -24,5 +24,14 @@ namespace HttpRequestHelper.Control
                 JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
                     : null;
         }
+        internal static async Task<object> DeleteAsync<T>(string link)
+        {
+            HttpClient client = new()
+            {
+                BaseAddress = new Uri(link)
+            };
+            using HttpResponseMessage response = await client.DeleteAsync(link);
+            return response.StatusCode;
+        }
     }
 }
