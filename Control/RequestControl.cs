@@ -24,6 +24,21 @@ namespace HttpRequestHelper.Control
                 JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
                     : null;
         }
+
+        internal static async Task<object> PostAsync<T>(object obj, string link, Encoding encoding, string mediaType, int statusCodeFailure)
+        {
+            HttpClient client = new()
+            {
+                BaseAddress = new Uri(link)
+            };
+
+            JObject document = JObject.FromObject(obj);
+            StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
+
+            using HttpResponseMessage response = await client.PostAsync(link, content);
+            return response.StatusCode;
+        }
+
         internal static async Task<object> DeleteAsync<T>(string link)
         {
             HttpClient client = new()
