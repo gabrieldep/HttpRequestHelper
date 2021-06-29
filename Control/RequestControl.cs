@@ -35,7 +35,6 @@ namespace HttpRequestHelper.Control
         {
             JObject document = JObject.FromObject(obj);
             StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
-
             using HttpResponseMessage response = await CreateHttpClient(link).PutAsync(link, content);
             return response.StatusCode;
         }
@@ -50,10 +49,9 @@ namespace HttpRequestHelper.Control
         /// <returns>Response from request.</returns>
         public static async Task<HttpStatusCode> PostAsync<T>(object obj, string link, Encoding encoding, string mediaType)
         {
-            using HttpResponseMessage response = await CreateHttpClient(link)
-                .PostAsync(
-                    link,
-                    new StringContent(JsonConvert.SerializeObject(JObject.FromObject(obj)), encoding, mediaType));
+            JObject document = JObject.FromObject(obj);
+            StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
+            using HttpResponseMessage response = await CreateHttpClient(link).PostAsync(link, content);
             return response.StatusCode;
         }
 
