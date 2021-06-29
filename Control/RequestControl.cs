@@ -73,7 +73,7 @@ namespace HttpRequestHelper.Control
         /// </summary>
         /// <param name="link">Link</param>
         /// <returns>HttpClient.</returns>
-        public static HttpClient CreateHttpClient(string link)
+        internal static HttpClient CreateHttpClient(string link)
         {
             return new HttpClient { BaseAddress = new Uri(link) };
         }
