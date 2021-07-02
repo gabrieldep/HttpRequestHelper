@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HttpRequestHelper.Control
 {
-    public class RequestControl
+    public class RequestSenderControl
     {
         /// <summary>
         /// Generic get method
