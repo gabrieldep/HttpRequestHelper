@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HttpRequestHelper.Control
 {
-    class VerificationTokenControl
+    public class VerificationTokenControl
     {
         public static IActionResult WrongToken()
         {

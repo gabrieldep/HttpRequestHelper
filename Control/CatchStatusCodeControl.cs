@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HttpRequestHelper.Control
 {
-    class CatchStatusCodeControl
+    public class CatchStatusCodeControl
     {
         public static HttpStatusCode GetStatusCode(Exception exception)
         {
