@@ -17,7 +17,7 @@ namespace HttpRequestHelper.Control
             {
                 StatusCode = (int)HttpStatusCode.Unauthorized,
                 ContentType = "application/json",
-                Content = JsonConvert.SerializeObject(new { mesasge = "Unauthorized " })
+                Content = JsonConvert.SerializeObject(new { message = "Unauthorized!" })
             };
         }
     }
