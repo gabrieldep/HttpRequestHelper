@@ -47,7 +47,7 @@ namespace HttpRequestHelper.Control
         /// <param name="encoding">Encoding</param>
         /// <param name="mediaType">Media type</param>
         /// <returns>Response from request.</returns>
-        public static async Task<HttpStatusCode> PostAsync<T>(object obj, string link, Encoding encoding, string mediaType)
+        public static async Task<HttpStatusCode> PostAsync(object obj, string link, Encoding encoding, string mediaType)
         {
             JObject document = JObject.FromObject(obj);
             StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
