@@ -25,6 +25,21 @@ namespace HttpRequestHelper.Control
         }
 
         /// <summary>
+        /// Generic get method
+        /// </summary>
+        /// <param name="link">Link</param>
+        /// <returns>Response from request.</returns>
+        public static async Task<T> GetAsync<T>(string link, int timeOutMinutes)
+        {
+            var clienteHttp = CreateHttpClient(link);
+            clienteHttp.Timeout = TimeSpan.FromMinutes(timeOutMinutes);
+            using HttpResponseMessage response = await clienteHttp.GetAsync(link);
+            return response.IsSuccessStatusCode ?
+                JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
+                    : default;
+        }
+
+        /// <summary>
         /// Generic put method
         /// </summary>
         /// <param name="obj">Object to send</param>
