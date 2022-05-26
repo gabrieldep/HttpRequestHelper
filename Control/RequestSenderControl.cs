@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
@@ -31,12 +32,14 @@ namespace HttpRequestHelper.Control
         /// <param name="encoding">Encoding</param>
         /// <param name="mediaType">Media type</param>
         /// <returns>Response from request.</returns>
-        public static async Task<HttpStatusCode> PutAsync<T>(object obj, string link, Encoding encoding, string mediaType)
+        public static async Task<T> PutAsync<T>(object obj, string link, Encoding encoding, string mediaType)
         {
             JObject document = JObject.FromObject(obj);
             StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
             using HttpResponseMessage response = await CreateHttpClient(link).PutAsync(link, content);
-            return response.StatusCode;
+            return response.IsSuccessStatusCode ?
+                JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
+                    : default;
         }
 
         /// <summary>
@@ -47,12 +50,14 @@ namespace HttpRequestHelper.Control
         /// <param name="encoding">Encoding</param>
         /// <param name="mediaType">Media type</param>
         /// <returns>Response from request.</returns>
-        public static async Task<HttpStatusCode> PostAsync(object obj, string link, Encoding encoding, string mediaType)
+        public static async Task<T> PostAsync<T>(object obj, string link, Encoding encoding, string mediaType)
         {
             JObject document = JObject.FromObject(obj);
             StringContent content = new(JsonConvert.SerializeObject(document), encoding, mediaType);
             using HttpResponseMessage response = await CreateHttpClient(link).PostAsync(link, content);
-            return response.StatusCode;
+            return response.IsSuccessStatusCode ?
+                JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
+                    : default;
         }
 
         /// <summary>
@@ -60,10 +65,12 @@ namespace HttpRequestHelper.Control
         /// </summary>
         /// <param name="link">Link</param>
         /// <returns>Response from request.</returns>
-        public static async Task<HttpStatusCode> DeleteAsync<T>(string link)
+        public static async Task<T> DeleteAsync<T>(string link)
         {
             using HttpResponseMessage response = await CreateHttpClient(link).DeleteAsync(link);
-            return response.StatusCode;
+            return response.IsSuccessStatusCode ?
+                JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
+                    : default;
         }
 
         /// <summary>
