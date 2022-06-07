@@ -76,6 +76,24 @@ namespace HttpRequestHelper.Control
         }
 
         /// <summary>
+        /// Generic post method
+        /// </summary>
+        /// <param name="obj">Object to send</param>
+        /// <param name="link">Link</param>
+        /// <param name="encoding">Encoding</param>
+        /// <param name="mediaType">Media type</param>
+        /// <returns>Response from request.</returns>
+        public static async Task<T> PostArrayAsync<T>(object obj, string link, Encoding encoding, string mediaType)
+        {
+            JArray vetor = JArray.FromObject(obj);
+            StringContent content = new(JsonConvert.SerializeObject(vetor), encoding, mediaType);
+            using HttpResponseMessage response = await CreateHttpClient(link).PostAsync(link, content);
+            return response.IsSuccessStatusCode ?
+                JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())
+                    : default;
+        }
+
+        /// <summary>
         /// Generic delete method
         /// </summary>
         /// <param name="link">Link</param>
